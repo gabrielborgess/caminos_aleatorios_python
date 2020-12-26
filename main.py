@@ -2,9 +2,37 @@ from borracho import BorrachoTradicional
 from campo import Campo
 from coordenada import Coordenada
 
+def caminata(campo,borracho,pasos):
+    inicio=campo.obtener_coordenada(borracho)
+
+    for _ in range(pasos):
+        campo.mover_borracho(borracho)
+    return inicio.distancia(campo.obtener_coordenada(borracho))
+
+
+
+def simular_caminata(pasos,intentos,tipo_de_Borracho):
+    borracho=tipo_de_Borracho(nombre='Brielga')
+    origen=Coordenada(0,0)
+    distancias=[]
+    
+    for _ in range(intentos):
+        campo=Campo()
+        campo.anadir_borracho(borracho,origen)
+        simulacion_caminata=caminata(campo,borracho,pasos)
+        distancias.append(round(simulacion_caminata,1))
+
 
 def main(distancias,intentos,tipo_de_Borracho):
-
+    for pasos in distancias:
+        distancias=simular_caminata(pasos,intentos,tipo_de_Borracho)
+        distancia_media=round(sum(distancias)/len(distancias),4)
+        distancia_maxima=max(distancias)
+        distancia_minima=min(distancias)
+        print(f'{tipo_de_borracho.__name__} caminata aleatoria de {pasos} ')
+        print(f'Media={distancia_media}')
+        print(f'Max={distancia_maxima}')
+        print(f'Min={distancia_minima}')
 
 if __name__ == '__main__':
     distancias_de_caminata=[10,100,1000,10000]
